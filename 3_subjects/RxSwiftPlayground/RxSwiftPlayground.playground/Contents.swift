@@ -27,3 +27,18 @@ PlaygroundPage.current.needsIndefiniteExecution = true
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  */
+
+
+example(of: "PublishSubject") {
+    let subject = PublishSubject<String>()
+    
+    subject.onNext("Is anyone listening?")
+    
+    let subscriptionOne = subject.subscribe(onNext: { string in
+        print(string)
+    })
+    
+    subject.on(.next("1"))
+    
+    subject.onNext("2")
+}
