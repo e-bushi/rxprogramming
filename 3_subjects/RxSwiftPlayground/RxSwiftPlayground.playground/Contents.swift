@@ -72,6 +72,8 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 //
 //}
 
+
+//-------------------------------------------------
 enum MyError: Error {
     case anError
 }
@@ -85,27 +87,71 @@ func print<T: CustomStringConvertible> (label: String, event: Event<T>) {
  providing a default initial value. If you can’t provide a default initial value at
  creation time, that probably means you need to use a PublishSubject instead.”
 */
+//
+//example(of: "BehaviorSubject") {
+//
+//    let subject = BehaviorSubject(value: "Initial Value")
+//
+//    let disposeBag = DisposeBag()
+//
+//    subject.onNext("X")
+//
+//    subject
+//        .subscribe {
+//         print(label: "1)", event: $0)
+//    }
+//    .disposed(by: disposeBag)
+//
+//    subject.onError(MyError.anError)
+//
+//    subject
+//        .subscribe {
+//        print(label: "2)", event: $0)
+//    }
+//    .disposed(by: disposeBag)
+//
+//}
 
-example(of: "BehaviorSubject") {
+//-------------------------------------------------
+
+example(of: "ReplayString") {
     
-    let subject = BehaviorSubject(value: "Initial Value")
+    let subject = ReplaySubject<String>.create(bufferSize: 2)
     
     let disposeBag = DisposeBag()
     
-    subject.onNext("X")
+    subject.onNext("1")
+    
+    subject.onNext("2")
+
+    subject.onNext("3")
     
     subject
         .subscribe {
-         print(label: "1)", event: $0)
-    }
-    .disposed(by: disposeBag)
+            print(label: "1)", event: $0)
+    }.disposed(by: disposeBag)
+    
+    subject
+        .subscribe {
+            print(label: "2)", event: $0)
+    }.disposed(by: disposeBag)
+    
+    subject
+        .subscribe {
+            print(label: "3)", event: $0)
+    }.disposed(by: disposeBag)
+    
+    subject.onNext("4")
     
     subject.onError(MyError.anError)
     
+    subject.dispose()
+    
     subject
         .subscribe {
-        print(label: "2)", event: $0)
-    }
-    .disposed(by: disposeBag)
-    
+            print(label: "4)", event: $0)
+    }.disposed(by: disposeBag)
+
 }
+
+
