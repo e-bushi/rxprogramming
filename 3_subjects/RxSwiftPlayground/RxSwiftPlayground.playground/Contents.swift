@@ -114,44 +114,72 @@ func print<T: CustomStringConvertible> (label: String, event: Event<T>) {
 
 //-------------------------------------------------
 
-example(of: "ReplayString") {
-    
-    let subject = ReplaySubject<String>.create(bufferSize: 2)
+//example(of: "ReplayString") {
+//
+//    let subject = ReplaySubject<String>.create(bufferSize: 2)
+//
+//    let disposeBag = DisposeBag()
+//
+//    subject.onNext("1")
+//
+//    subject.onNext("2")
+//
+//    subject.onNext("3")
+//
+//    subject
+//        .subscribe {
+//            print(label: "1)", event: $0)
+//    }.disposed(by: disposeBag)
+//
+//    subject
+//        .subscribe {
+//            print(label: "2)", event: $0)
+//    }.disposed(by: disposeBag)
+//
+//    subject
+//        .subscribe {
+//            print(label: "3)", event: $0)
+//    }.disposed(by: disposeBag)
+//
+//    subject.onNext("4")
+//
+//    subject.onError(MyError.anError)
+//
+//    subject.dispose()
+//
+//    subject
+//        .subscribe {
+//            print(label: "4)", event: $0)
+//    }.disposed(by: disposeBag)
+//
+//}
+
+
+example(of: "Variable") {
+    //1
+    let variable = Variable("Intial Value")
     
     let disposeBag = DisposeBag()
     
-    subject.onNext("1")
+    variable.value = "New Intial Value"
     
-    subject.onNext("2")
-
-    subject.onNext("3")
-    
-    subject
+    variable.asObservable()
         .subscribe {
             print(label: "1)", event: $0)
-    }.disposed(by: disposeBag)
+    }
+    .disposed(by: disposeBag)
     
-    subject
+    variable.value = "1"
+    
+    variable.asObservable()
         .subscribe {
             print(label: "2)", event: $0)
-    }.disposed(by: disposeBag)
+    }
+    .disposed(by: disposeBag)
     
-    subject
-        .subscribe {
-            print(label: "3)", event: $0)
-    }.disposed(by: disposeBag)
     
-    subject.onNext("4")
+    variable.value = "2"
     
-    subject.onError(MyError.anError)
     
-    subject.dispose()
-    
-    subject
-        .subscribe {
-            print(label: "4)", event: $0)
-    }.disposed(by: disposeBag)
-
 }
-
 
